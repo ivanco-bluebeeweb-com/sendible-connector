@@ -24,7 +24,7 @@ async def _get_client(ctx, cid: str = ""):
     "List social profiles (channels) connected in Sendible.",
     action_type="read",
 )
-async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult[ProfileList]:
+async def list_profiles(ctx, params: ListProfilesParams) -> ActionResult[ProfileList]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -49,7 +49,7 @@ async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult[Profile
     "Get details of a single Sendible social profile.",
     action_type="read",
 )
-async def get_profile(params: GetProfileParams, ctx) -> ActionResult[ProfileRecord]:
+async def get_profile(ctx, params: GetProfileParams) -> ActionResult[ProfileRecord]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -71,7 +71,7 @@ async def get_profile(params: GetProfileParams, ctx) -> ActionResult[ProfileReco
     "List social messages/posts from Sendible by status (scheduled, sent, draft).",
     action_type="read",
 )
-async def list_messages(params: ListMessagesParams, ctx) -> ActionResult[MessageList]:
+async def list_messages(ctx, params: ListMessagesParams) -> ActionResult[MessageList]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -96,7 +96,7 @@ async def list_messages(params: ListMessagesParams, ctx) -> ActionResult[Message
     "Get details of a specific social message/post in Sendible.",
     action_type="read",
 )
-async def get_message(params: GetMessageParams, ctx) -> ActionResult[MessageRecord]:
+async def get_message(ctx, params: GetMessageParams) -> ActionResult[MessageRecord]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -118,7 +118,7 @@ async def get_message(params: GetMessageParams, ctx) -> ActionResult[MessageReco
     "Create or schedule a new social post across Sendible profiles.",
     action_type="write",
 )
-async def create_message(params: CreateMessageParams, ctx) -> ActionResult[MessageRecord]:
+async def create_message(ctx, params: CreateMessageParams) -> ActionResult[MessageRecord]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -145,7 +145,7 @@ async def create_message(params: CreateMessageParams, ctx) -> ActionResult[Messa
     "Update an existing scheduled post in Sendible.",
     action_type="write",
 )
-async def update_message(params: UpdateMessageParams, ctx) -> ActionResult[MessageRecord]:
+async def update_message(ctx, params: UpdateMessageParams) -> ActionResult[MessageRecord]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -170,7 +170,7 @@ async def update_message(params: UpdateMessageParams, ctx) -> ActionResult[Messa
     "Permanently delete a scheduled or draft message in Sendible.",
     action_type="destructive",
     )
-async def delete_message(params: DeleteMessageParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_message(ctx, params: DeleteMessageParams) -> ActionResult[DeleteResult]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -184,7 +184,7 @@ async def delete_message(params: DeleteMessageParams, ctx) -> ActionResult[Delet
     "List social stream activity and mentions from Sendible.",
     action_type="read",
 )
-async def list_activities(params: ListActivitiesParams, ctx) -> ActionResult[ActivityList]:
+async def list_activities(ctx, params: ListActivitiesParams) -> ActionResult[ActivityList]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
@@ -209,7 +209,7 @@ async def list_activities(params: ListActivitiesParams, ctx) -> ActionResult[Act
     "Audit health of connected Sendible social accounts and scheduled message queues.",
     action_type="read",
 )
-async def audit_social_health(params: ConnectionIdParams, ctx) -> ActionResult[SocialHealthAuditResult]:
+async def audit_social_health(ctx, params: ConnectionIdParams) -> ActionResult[SocialHealthAuditResult]:
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
     try:
