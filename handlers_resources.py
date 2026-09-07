@@ -40,7 +40,7 @@ async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult[Profile
             )
             for p in raw_items
         ]
-        return ActionResult.ok(ProfileList(profiles=items, total=len(items)), summary=f"Found {len(items)} Sendible profiles.")
+        return ActionResult.success(ProfileList(profiles=items, total=len(items)), summary=f"Found {len(items)} Sendible profiles.")
     except Exception as e:
         return ActionResult.error(f"Failed to list profiles: {e}")
 
@@ -62,7 +62,7 @@ async def get_profile(params: GetProfileParams, ctx) -> ActionResult[ProfileReco
             avatar_url=p.get("avatar_url", p.get("image_url")),
             raw=p
         )
-        return ActionResult.ok(rec, summary=f"Retrieved profile {rec.name}")
+        return ActionResult.success(rec, summary=f"Retrieved profile {rec.name}")
     except Exception as e:
         return ActionResult.error(f"Failed to get profile: {e}")
 
@@ -87,7 +87,7 @@ async def list_messages(params: ListMessagesParams, ctx) -> ActionResult[Message
             )
             for m in raw_items
         ]
-        return ActionResult.ok(MessageList(messages=items, total=len(items)), summary=f"Found {len(items)} {params.status} messages.")
+        return ActionResult.success(MessageList(messages=items, total=len(items)), summary=f"Found {len(items)} {params.status} messages.")
     except Exception as e:
         return ActionResult.error(f"Failed to list messages: {e}")
 
@@ -109,7 +109,7 @@ async def get_message(params: GetMessageParams, ctx) -> ActionResult[MessageReco
             profile_ids=[str(pid) for pid in m.get("profiles", [])],
             raw=m
         )
-        return ActionResult.ok(rec, summary=f"Retrieved message {rec.id}")
+        return ActionResult.success(rec, summary=f"Retrieved message {rec.id}")
     except Exception as e:
         return ActionResult.error(f"Failed to get message: {e}")
 
@@ -136,7 +136,7 @@ async def create_message(params: CreateMessageParams, ctx) -> ActionResult[Messa
             profile_ids=params.profile_ids,
             raw=m
         )
-        return ActionResult.ok(rec, summary=f"Created social post {rec.id}")
+        return ActionResult.success(rec, summary=f"Created social post {rec.id}")
     except Exception as e:
         return ActionResult.error(f"Failed to create message: {e}")
 
@@ -161,7 +161,7 @@ async def update_message(params: UpdateMessageParams, ctx) -> ActionResult[Messa
             scheduled_for=params.scheduled_for,
             raw=m
         )
-        return ActionResult.ok(rec, summary=f"Updated message {params.message_id}")
+        return ActionResult.success(rec, summary=f"Updated message {params.message_id}")
     except Exception as e:
         return ActionResult.error(f"Failed to update message: {e}")
 
@@ -175,7 +175,7 @@ async def delete_message(params: DeleteMessageParams, ctx) -> ActionResult[Delet
     if err: return err
     try:
         await client.delete_message(params.message_id)
-        return ActionResult.ok(DeleteResult(success=True, message=f"Message {params.message_id} deleted."), summary=f"Deleted message {params.message_id}")
+        return ActionResult.success(DeleteResult(success=True, message=f"Message {params.message_id} deleted."), summary=f"Deleted message {params.message_id}")
     except Exception as e:
         return ActionResult.error(f"Failed to delete message: {e}")
 
@@ -200,7 +200,7 @@ async def list_activities(params: ListActivitiesParams, ctx) -> ActionResult[Act
             )
             for a in raw_items
         ]
-        return ActionResult.ok(ActivityList(activities=items, total=len(items)), summary=f"Found {len(items)} activity items.")
+        return ActionResult.success(ActivityList(activities=items, total=len(items)), summary=f"Found {len(items)} activity items.")
     except Exception as e:
         return ActionResult.error(f"Failed to list activities: {e}")
 
@@ -228,6 +228,6 @@ async def audit_social_health(params: ConnectionIdParams, ctx) -> ActionResult[S
                 "undelivered_count": len(undelivered)
             }
         )
-        return ActionResult.ok(res, summary=f"Sendible health: {res.health_status} ({len(profiles)} profiles, {len(scheduled)} scheduled, {len(undelivered)} errors)")
+        return ActionResult.success(res, summary=f"Sendible health: {res.health_status} ({len(profiles)} profiles, {len(scheduled)} scheduled, {len(undelivered)} errors)")
     except Exception as e:
         return ActionResult.error(f"Health audit failed: {e}")
