@@ -17,7 +17,7 @@ async def _get_client(ctx, cid: str = ""):
     conn = await resolve_connection(ctx, cid)
     if not conn:
         return None, ActionResult.error("No active Sendible connection", code="UNAUTHORIZED")
-    return SendibleClient(access_token=conn["api_key"], base_url=conn.get("base_url", "")), None
+    return SendibleClient(access_token=conn.get("access_token") or conn.get("api_key", ""), base_url=conn.get("base_url", "")), None
 
 @chat.function(
     "list_profiles",

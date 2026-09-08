@@ -48,21 +48,21 @@ async def resolve_connection(ctx, connection_id: str = "") -> dict | None:
 )
 async def connect_sendible(ctx, params: ConnectParams) -> ActionResult[ConnectionRecord]:
     """Connect Sendible Connector."""
-    client = SendibleClient(api_key=params.api_key, base_url=params.base_url)
+    client = SendibleClient(access_token=params.access_token, base_url=params.base_url)
     await client.verify_auth()
     conns = await _load_connections(ctx)
     cid = f"conn_{uuid.uuid4().hex[:8]}"
     record = {
         "id": cid,
         "label": params.label or "Sendible Account",
-        "api_key": params.api_key,
+        "access_token": params.access_token,
         "base_url": params.base_url,
         "is_active": True
     }
     for c in conns: c["is_active"] = False
     conns.append(record)
     await _save_connections(ctx, conns)
-    return ActionResult.success(ConnectionRecord(id=cid, label=record["label"], masked_key=_mask(params.api_key), base_url=params.base_url, is_active=True), summary="Sendible connected.")
+    return ActionResult.success(ConnectionRecord(id=cid, label=record["label"], masked_key=_mask(params.access_token), base_url=params.base_url, is_active=True), summary="Sendible connected.")
 
 @chat.function(
     "list_connections",
@@ -94,4 +94,4 @@ async def disconnect_sendible(ctx, params: ConnectionIdParams) -> ActionResult[D
     if new_conns and target.get("is_active"):
         new_conns[0]["is_active"] = True
     await _save_connections(ctx, new_conns)
-    return ActionResult.success(DeleteResult(id=target["id"], deleted=True, message="Disconnected successfully"), summary="Sendible disconnected.")
+    return ActionResult.success(DeleteResult(success=True, message="Disconnected successfully"), summary="Sendible disconnected.")
